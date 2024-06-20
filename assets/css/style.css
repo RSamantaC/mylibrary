@@ -1,0 +1,135 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #41556e;
+    font-family: 'Playfair Display', serif;
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 60px;
+}
+
+#bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0;
+    box-shadow: 0px 4px 6px #9ad0c3;
+    background-color: #41556e;
+}
+
+#bottom .col-12 {
+    font-size: 0.9em;
+    color: #9ad0c3;
+    text-shadow: 2px 2px 4px #41556e;
+}
+
+#searchImage {
+    margin-bottom: -170px;
+    margin-left: -100px;
+}
+
+.btn {
+    background-color: #9ad0c3;
+    border-color: #9ad0c3;
+    color: #41556e;
+}
+
+.btn:hover {
+    background-color: #ff997a;
+    border-color: #ff997a;
+    color: #41556e;
+}
+
+#searchInput {
+    border-color: #41556e;
+}
+
+#searchInput.active {
+    border-color: #41556e;
+}
+
+.categories {
+    width: 22vh;
+    margin-right: 8px;
+}
+
+#booksContainer {
+    margin-top: 20px;
+    margin-bottom: 100px;
+}
+
+
+.book-item {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #9ad0c3;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.book-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.book-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #41556e;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.book-author {
+    font-size: 1.1em;
+    font-style: italic;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.book-item::after {
+    content: "";
+    display: block;
+    margin-top: 15px;
+    border-bottom: 1px solid #9ad0c3;
+}
+
+.book-item button {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination button {
+    margin: 0 10px;
+}
+
+#paginationContainer {
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+#prevPage,
+#nextPage {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
