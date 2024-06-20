@@ -75,16 +75,19 @@ function AddBookToList(book) {
 
 async function showBookDescription(key) {
     document.getElementById('bookDescriptionModalLabel').textContent = 'Nessun titolo trovato';
-    document.getElementById('bookDescriptionContent').textContent = 'Nessuna descrizione trovata';
+    document.getElementById('bookDescriptionContent').textContent = 'Attendi il caricamento';
 
     let url = `https://openlibrary.org${key}.json`;
     let response = await fetch(url);
     let bookData = await response.json();
 
     if (bookData) {
-        document.getElementById('bookDescriptionModalLabel').textContent = bookData.title || 'Nessun titolo trovato';
         document.getElementById('bookDescriptionContent').textContent = bookData.description ? (typeof bookData.description === 'string' ? bookData.description : bookData.description.value) : 'Nessuna descrizione trovata';
     }
+   else {
+    document.getElementById('bookDescriptionModalLabel').textContent = bookData.title || 'Nessun titolo trovato';
+    document.getElementById('bookDescriptionContent').textContent = 'Nessuna descrizione trovata';
+   }
 }
 
 function ClearBooksList() {
