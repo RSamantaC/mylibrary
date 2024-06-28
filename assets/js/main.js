@@ -1,5 +1,3 @@
-var currentPage = 1;
-
 document.addEventListener('DOMContentLoaded', function () {
     let searchForm = document.getElementById('searchForm');
     searchForm.addEventListener('submit', async function (event) {
@@ -21,10 +19,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function showSpinner() {
+    document.getElementById('spinnerImage').classList.remove('hiddenspinner');
+}
+
+function hideSpinner() {
+    document.getElementById('spinnerImage').classList.add('hiddenspinner');
+}
+
 async function loadBooks() {
     ClearBooksList();
+    showSpinner();
 
-    let searchText = document.getElementById('searchInput').value;
+    let searchText = document.getElementById('searchInput').value.trim();
     let selectedCategory = document.getElementById('categorySelect').value;
     let booksFound = await downloadBooks(searchText, selectedCategory, currentPage);
     booksFound.docs.forEach(function (book) {
@@ -32,12 +39,16 @@ async function loadBooks() {
     });
 
     updatePaginationButtons(booksFound.numFound);
+    hideSpinner();
 }
 
 async function downloadBooks(Title, Category, Page) {
-    let url = "https://openlibrary.org/search.json?title=" + encodeURIComponent(Title) + "&limit=10&page=" + Page;
+    let url = `https://openlibrary.org/search.json?limit=10&page=${Page}`;
+    if (Title) {
+        url += `&title=${encodeURIComponent(Title)}`;
+    }
     if (Category && Category !== "All") {
-        url += "&subject=" + encodeURIComponent(Category);
+        url += `&subject=${encodeURIComponent(Category)}`;
     }
     let response = await fetch(url);
     let books = await response.json();
@@ -82,12 +93,11 @@ async function showBookDescription(key) {
     let bookData = await response.json();
 
     if (bookData) {
+        document.getElementById('bookDescriptionModalLabel').textContent = bookData.title || 'Nessun titolo trovato';
         document.getElementById('bookDescriptionContent').textContent = bookData.description ? (typeof bookData.description === 'string' ? bookData.description : bookData.description.value) : 'Nessuna descrizione trovata';
+    } else {
+        document.getElementById('bookDescriptionContent').textContent = 'Nessuna descrizione trovata';
     }
-   else {
-    document.getElementById('bookDescriptionModalLabel').textContent = bookData.title || 'Nessun titolo trovato';
-    document.getElementById('bookDescriptionContent').textContent = 'Nessuna descrizione trovata';
-   }
 }
 
 function ClearBooksList() {
