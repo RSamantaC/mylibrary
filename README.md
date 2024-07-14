@@ -18,7 +18,7 @@
 
 ## Tech Stack
 
-**Client:** Client: HTML, CSS, JavaScript
+**Client:** HTML, CSS, JavaScript
 
 
 

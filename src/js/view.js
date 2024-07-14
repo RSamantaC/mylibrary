@@ -1,3 +1,8 @@
+
+import { downloadBooks } from './service.js';
+import { fetchBookDescription } from './service.js';
+
+var currentPage = 1;
 document.addEventListener('DOMContentLoaded', function () {
     let searchForm = document.getElementById('searchForm');
     searchForm.addEventListener('submit', async function (event) {
@@ -27,32 +32,38 @@ function hideSpinner() {
     document.getElementById('spinnerImage').classList.add('hiddenspinner');
 }
 
+function showError(message) {
+    const errorContainer = document.getElementById('errorContainer');
+    errorContainer.textContent = message;
+    errorContainer.classList.remove('hidden');
+}
+
+function hideError() {
+    const errorContainer = document.getElementById('errorContainer');
+    errorContainer.classList.add('hidden');
+}
+
 async function loadBooks() {
     ClearBooksList();
     showSpinner();
+    hideError();
 
     let searchText = document.getElementById('searchInput').value.trim();
     let selectedCategory = document.getElementById('categorySelect').value;
-    let booksFound = await downloadBooks(searchText, selectedCategory, currentPage);
-    booksFound.docs.forEach(function (book) {
-        AddBookToList(book);
-    });
 
-    updatePaginationButtons(booksFound.numFound);
-    hideSpinner();
-}
+    try {
+        let booksFound = await downloadBooks(searchText, selectedCategory, currentPage);
+        _.get(booksFound, 'docs', []).forEach(function (book) {
+            AddBookToList(book);
+        });
 
-async function downloadBooks(Title, Category, Page) {
-    let url = `https://openlibrary.org/search.json?limit=10&page=${Page}`;
-    if (Title) {
-        url += `&title=${encodeURIComponent(Title)}`;
+        updatePaginationButtons(_.get(booksFound, 'numFound', 0));
+    } catch (error) {
+        console.error('Errore durante il caricamento dei libri:', error);
+        showError('Si è verificato un errore durante il caricamento dei libri. Riprova più tardi.');
+    } finally {
+        hideSpinner();
     }
-    if (Category && Category !== "All") {
-        url += `&subject=${encodeURIComponent(Category)}`;
-    }
-    let response = await fetch(url);
-    let books = await response.json();
-    return books;
 }
 
 function AddBookToList(book) {
@@ -62,12 +73,12 @@ function AddBookToList(book) {
     bookElement.classList.add('book-item');
 
     let bookTitle = document.createElement('p');
-    bookTitle.textContent = book.title;
+    bookTitle.textContent = _.get(book, 'title', 'Titolo non disponibile');
     bookTitle.classList.add('book-title');
     bookElement.appendChild(bookTitle);
 
     let bookAuthor = document.createElement('p');
-    bookAuthor.textContent = 'di ' + (book.author_name ? book.author_name.join(', ') : 'Autore sconosciuto');
+    bookAuthor.textContent = 'di ' + (_.get(book, 'author_name', ['Autore sconosciuto']).join(', '));
     bookAuthor.classList.add('book-author');
     bookElement.appendChild(bookAuthor);
 
@@ -85,18 +96,25 @@ function AddBookToList(book) {
 }
 
 async function showBookDescription(key) {
-    document.getElementById('bookDescriptionModalLabel').textContent = 'Nessun titolo trovato';
-    document.getElementById('bookDescriptionContent').textContent = 'Attendi il caricamento';
+    console.log(key);
+    const modalLabel = document.getElementById('bookDescriptionModalLabel');
+    const modalContent = document.getElementById('bookDescriptionContent');
+    
+    modalLabel.textContent = 'Caricamento...';
+    modalContent.textContent = 'Attendi il caricamento';
 
-    let url = `https://openlibrary.org${key}.json`;
-    let response = await fetch(url);
-    let bookData = await response.json();
+    try {
+        let bookData = await fetchBookDescription(key);
 
-    if (bookData) {
-        document.getElementById('bookDescriptionModalLabel').textContent = bookData.title || 'Nessun titolo trovato';
-        document.getElementById('bookDescriptionContent').textContent = bookData.description ? (typeof bookData.description === 'string' ? bookData.description : bookData.description.value) : 'Nessuna descrizione trovata';
-    } else {
-        document.getElementById('bookDescriptionContent').textContent = 'Nessuna descrizione trovata';
+        modalLabel.textContent = _.get(bookData, 'title', 'Nessun titolo trovato');
+        modalContent.textContent = _.get(bookData, 'description', 'Nessuna descrizione trovata');
+        if (typeof modalContent.textContent !== 'string') {
+            modalContent.textContent = _.get(modalContent.textContent, 'value', 'Nessuna descrizione trovata');
+        }
+    } catch (error) {
+        console.error('Errore durante il caricamento del titolo o della descrizione:', error);
+        modalLabel.textContent = 'Errore';
+        modalContent.textContent = 'Si è verificato un errore durante il caricamento del titolo o della descrizione. Riprova più tardi.';
     }
 }
 

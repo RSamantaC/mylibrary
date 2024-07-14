@@ -87,6 +87,10 @@ body {
     display: none;
 }
 
+#errorContainer {
+    margin-top: 50px;
+}
+
 .hiddenspinner {
     display: none;
 }
