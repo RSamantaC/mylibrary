@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Esplora My Library - Trova libri d'arte, scienza, finanza, storia e molto altro ancora.">
+    <meta name="keywords"
+        content="Raffaella Samanta Caiulo, libreria, libri, arte, scienza, finanza, storia, bambini, biografie, salute, benessere, sociale, manuali">
+    <meta name="author" content="Raffaella Samanta Caiulo">
+    <meta property="og:title" content="My Library | Esplora la libreria My Library">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rsamantac.github.io">
+    <meta property="og:description"
+        content="Esplora My Library - Trova libri d'arte, scienza, finanza, storia e molto altro ancora.">
+    <meta property="og:image" content="https://rsamantac.github.io/mylibrary/assets/images/my-library.png">
+    <title>My Library</title>
+    <link rel="icon" href="assets/images/faviconbooks.png" type="image/x-icon">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6 text-center">
+                <img src="assets/images/my-library.png" alt="Logo My Library" id="searchImage">
+                <form class="d-flex" id="searchForm">
+                    <select class="form-select categories" id="categorySelect">
+                        <option value="All">All</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Animals">Animals</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Science & Mathematics">Science & Mathematics</option>
+                        <option value="Business & Finance">Business & Finance</option>
+                        <option value="Children's">Children's</option>
+                        <option value="History">History</option>
+                        <option value="Health & Wellness">Health & Wellness</option>
+                        <option value="Biography">Biography</option>
+                        <option value="Social Sciences">Social Sciences</option>
+                        <option value="Places">Places</option>
+                        <option value="Textbooks">Textbooks</option>
+                        <option value="Books by Language">Books by Language</option>
+                    </select>
+                    <input class="form-control me-2" type="search" aria-label="Search" id="searchInput"
+                        placeholder="Cerca per titolo">
+                    <button class="btn btn-outline-primary" type="submit">Cerca</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="errorContainer" class="alert alert-danger hidden" role="alert"></div>
+
+        <div class="hiddenloading">
+            <img src="assets/images/spinner.png" alt="Loading" id="spinnerImage" class="hiddenspinner">
+        </div>
+
+        <div id="booksContainer" class="container"></div>
+
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6 text-center">
+                <button id="prevPage" class="btn btn-outline-primary me-2 hidden">Pagina precedente</button>
+                <button id="nextPage" class="btn btn-outline-primary hidden">Pagina successiva</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="bookDescriptionModal" tabindex="-1" role="dialog"
+        aria-labelledby="bookDescriptionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookDescriptionModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="bookDescriptionContent">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="bottom" class="row text-center py-3 shadow-lg">
+        <div class="col-12">
+            Copyright &copy; 2024 Raffaella Samanta Caiulo
+        </div>
+    </footer>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+    <script src="main.bundle.js"></script>
+</body>
+
+</html>
