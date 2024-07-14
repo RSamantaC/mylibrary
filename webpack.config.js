@@ -31,6 +31,6 @@ module.exports = {
     extensions: ['.js']
   },
   devServer: {
-    static: './'
+    static: './public/'
   }
 };
